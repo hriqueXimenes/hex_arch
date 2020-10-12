@@ -41,6 +41,10 @@ func (h *Handler) Create(c *gin.Context) {
 	}
 
 	account, err := h.accountService.Create(req)
+	if account != nil {
+		c.AbortWithStatusJSON(500, gin.H{"message": err.Error()})
+		return
+	}
 
 	c.JSON(200, account)
 }
