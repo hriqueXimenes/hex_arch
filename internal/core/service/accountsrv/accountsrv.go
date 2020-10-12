@@ -21,21 +21,21 @@ func New(repository ports.AccountRepository) *Service {
 //Get Return a specific account by ID
 func (s *Service) Get(id string) (*domains.Account, error) {
 
-	if isValidID(id) {
+	if !isValidID(id) {
 		return &domains.Account{}, fmt.Errorf("error")
 	}
 
-	obj, err := s.accountRepository.Get(id)
-	if err != nil {
-		return &domains.Account{}, fmt.Errorf("error")
-	}
-
-	return obj, nil
+	return s.accountRepository.Get(id)
 }
 
 //Create Account
 func (s *Service) Create(account *domains.Account) (*domains.Account, error) {
-	return nil, nil
+
+	if !isValidCreateParameters(account) {
+		return &domains.Account{}, fmt.Errorf("error")
+	}
+
+	return s.accountRepository.Create(account)
 }
 
 func isValidID(id string) bool {
@@ -45,6 +45,18 @@ func isValidID(id string) bool {
 	}
 
 	if num <= 0 {
+		return false
+	}
+
+	return true
+}
+
+func isValidCreateParameters(account *domains.Account) bool {
+	if account == nil {
+		return false
+	}
+
+	if account.Username == "" || account.Password == "" {
 		return false
 	}
 

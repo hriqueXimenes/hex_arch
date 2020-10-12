@@ -1,6 +1,7 @@
 package accounthdl
 
 import (
+	"hriqueXimenes/hexagonal/internal/core/domains"
 	"hriqueXimenes/hexagonal/internal/core/ports"
 
 	"github.com/gin-gonic/gin"
@@ -31,5 +32,15 @@ func (h *Handler) Get(c *gin.Context) {
 
 //Create account
 func (h *Handler) Create(c *gin.Context) {
-	c.JSON(200, nil)
+
+	req := &domains.Account{}
+	err := c.ShouldBindJSON(req)
+	if err != nil {
+		c.AbortWithStatusJSON(500, gin.H{"message": err.Error()})
+		return
+	}
+
+	account, err := h.accountService.Create(req)
+
+	c.JSON(200, account)
 }

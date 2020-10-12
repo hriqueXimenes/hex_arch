@@ -2,7 +2,7 @@ package domains
 
 //Account model.
 type Account struct {
-	ID       int
-	Username string
-	Password string
+	ID       int    `json:"id"`
+	Username string `json:"username"`
+	Password string `json:"password"`
 }

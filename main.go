@@ -1,6 +1,7 @@
 package main
 
 import (
+	"hriqueXimenes/hexagonal/db"
 	"hriqueXimenes/hexagonal/internal/core/service/accountsrv"
 	"hriqueXimenes/hexagonal/internal/handlers/accounthdl"
 	"hriqueXimenes/hexagonal/internal/repositories/accountrepo"
@@ -9,7 +10,16 @@ import (
 )
 
 func main() {
-	accountrepo := accountrepo.NewRelationalRepo(nil)
+
+	dbConfig := db.InitConfig()
+	db, err := db.New(dbConfig)
+	if err != nil {
+		panic(err)
+	}
+
+	db.RunFileQuery("migrations/schema.sql")
+
+	accountrepo := accountrepo.NewRelationalRepo(db)
 	accountsrv := accountsrv.New(accountrepo)
 	accounthdl := accounthdl.New(accountsrv)
 
