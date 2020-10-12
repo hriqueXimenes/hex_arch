@@ -19,7 +19,7 @@ func main() {
 
 	db.RunFileQuery("migrations/schema.sql")
 
-	accountrepo := accountrepo.NewRelationalRepo(db)
+	accountrepo := accountrepo.NewAccountRepository(db)
 	accountsrv := accountsrv.New(accountrepo)
 	accounthdl := accounthdl.New(accountsrv)
 

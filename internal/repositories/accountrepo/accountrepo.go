@@ -12,8 +12,8 @@ type AccountRepository struct {
 	*db.Database
 }
 
-//NewRelationalRepo Create Postgres Repos
-func NewRelationalRepo(db *db.Database) *AccountRepository {
+//NewAccountRepository Create relational Repos
+func NewAccountRepository(db *db.Database) *AccountRepository {
 	return &AccountRepository{db}
 }
 
